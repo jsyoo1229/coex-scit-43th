@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>spring5</title>
+<script th:src="@{/js/jquery-3.6.3.js}"></script>
+
+	<script type="text/javascript">
+	$.ajax({
+		url: "https://dapi.kakao.com/v2/search/blog",
+		type: 'get',
+		data: {query: '미움받을 용기'},
+		headers: {Authorization: "KakaoAK 94dca58ce2086d7d01d753e654d0cfe6"}
+	})
+	.done(function(msg) {
+		console.log(msg.documents[0].title);
+		console.log(msg.documents[0].thumbnail);
+		$('p#book').append("<b>"+msg.documents[0].title+"</b>");
+		$('p#book').append("<img src='"+msg.documents[0].thumbnail+"'/>");
+	});
+	
+	
+		
+	</script>
+
+</head>
+<body>
+<h1>[ spring5 ]</h1>
+
+<div sec:authorize="isAuthenticated()">
+	<span sec:authentication="name"></span>
+	님 로그인 중
+</div>
+
+<!-- http://localhost:8888/spring5/member/join -->
+
+<p sec:authorize="not isAuthenticated()"><a th:href="@{/member/join}">회원가입</a></p>
+<p sec:authorize="not isAuthenticated()"><a th:href="@{/member/loginForm}">로그인</a></p>
+<p sec:authorize="isAuthenticated()"><a th:href="@{/member/logout}">로그아웃</a></p>
+<p sec:authorize="isAuthenticated()"><a th:href="@{/member/mypage}">개인정보수정</a></p>
+<p><a th:href="@{/board/list}">게시판</a></p>
+
+<p><a th:href="@{/thymeleaf}">Security 관련 Thymeleaf</a></p>
+
+<hr>
+<h1>[ 책 검색 ]</h1>
+<p id="book"></p>
+
+
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ID 중복 확인</title>
+<script>
+function inputId() {
+	//현재 페이지의 id가 "id"인 입력란의 값을
+	//바깥쪽 창의 id가 "memberid"인 입력란에 넣는다
+	//현재 창을 닫는다
+	opener.document.getElementById("memberid").value = document.getElementById("id").value;
+	this.close();
+}
+</script>
+</head>
+<body>
+<h2>[ ID 중복확인 ]</h2>
+<form th:action="@{/member/idcheck}" method="post">
+검색할 ID 	<input type="text" name="id" id="id" th:value="${searchId}">
+			<input type="submit" value="검색">
+</form>
+
+<!-- 검색 후 (searchId가 null이 아닐 때)-->
+<div th:if="${searchId != null}">
+	<!-- 사용 불가능 (result가 true일때)-->
+	<div th:if="${result}">
+		<p>이미 사용중인 아이디 입니다.</p>
+	</div>
+	<!-- 사용 가능 (result가 false일때)-->
+	<div th:if="${not result}">
+		<p>사용 가능한 아이디 입니다.</p>
+		<p><input type="button" value="ID사용하기" onclick="inputId()"></p>
+	</div>
+</div>
+	
+</body>
+</html>
